@@ -21,11 +21,11 @@
 					</div>
 					<div>
 						<label> Height of container: {{height}} </label>
-						<input type="range" v-model.number = "height" min="50" max="800">
+						<input type="range" v-model.number="height" min="50" max="800">
 					</div>
 					<div>
 						<label> Width of container: {{width}} </label>
-						<input type="range" v-model.number = "width" min="50" max="400">
+						<input type="range" v-model.number="width" min="50" max="400">
 					</div>
 					<div>
 						<p> Measured Temperature: {{measuredTemp.toFixed(4)}} Kelvin </p>
@@ -40,6 +40,7 @@
 			<canvas width="width" height="height" id="canvas"></canvas>
 		</div>
 		<script src="vector.js"></script>
+		<script src="grid.js"></script>
 		<script src="ball.js"></script>
 		<script src="vue.js"></script>
 		<script src="d3.min.js"></script>

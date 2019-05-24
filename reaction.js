@@ -2,13 +2,13 @@
 
 // d3 stuff
 let margin = { top: 10, right: 10, bottom: 40, left: 40 },
-    graphwidth = 600 - margin.left - margin.right,
-    graphheight = 650 - margin.top - margin.bottom;
+		graphwidth = 600 - margin.left - margin.right,
+		graphheight = 650 - margin.top - margin.bottom;
 var svg = d3.select('.graph').append('svg')
-    .attr('width', graphwidth + margin.left + margin.right)
-    .attr('height', graphheight + margin.top + margin.bottom)
-  .append('g')
-    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+		.attr('width', graphwidth + margin.left + margin.right)
+		.attr('height', graphheight + margin.top + margin.bottom)
+	.append('g')
+		.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 // canvas stuff
 let canvas = document.getElementById("canvas");
@@ -76,10 +76,32 @@ let app = new Vue({
 			return animation(thing);
 		},
 		update: function(){
-			this.frame += 1/60;
-			this.particles.forEach(p => context.clearRect(p.x-(radius+1), p.y-(radius+1), 2*radius+2, 2*radius+2));
+			// this.frame += 1/60;
+			// this.particles.forEach(p => context.clearRect(p.x-(radius+1), p.y-(radius+1), 2*radius+2, 2*radius+2));
+			context.clearRect(0, 0, this.width, this.height);
+			// for(let i = 0; i < this.particles.length - 1; i++){
+
+			// check every particle method
+			for(let i = 0; i < this.particles.length - 1; i++){
+				for(let j = i + 1; j < this.particles.length; j++){
+					if(this.particles[i].touching(this.particles[j])){
+						if(this.particles[i].type != "product" && this.particles[j].type != "product" && this.particles[i].type != this.particles[j].type && this.particles[i].enough_energy(this.particles[j], this.energy)){
+							let tempx = this.particles[i].x;
+							let tempy = this.particles[i].y;
+							this.reactA -= 1;
+							this.reactB -= 1;
+							this.particles.splice(i, 1);
+							this.particles.splice(j - 1, 1);
+							this.particles.push(new product(tempx, tempy, radius));
+						}
+						else{
+							this.particles[i].bounce(this.particles[j]);
+						}
+					}
+				}
+			}
 			this.particles.forEach(p => p.update());
-		}
+		},
 	},
 	watch: {
 		width: function(){
